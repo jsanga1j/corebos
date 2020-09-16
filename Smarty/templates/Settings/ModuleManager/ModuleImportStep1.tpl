@@ -24,6 +24,9 @@ function changeInstallType(obj) {
 }
 </script>
 {/literal}
+{assign var="MODULEICON" value='side_list'}
+{assign var="MODULESECTION" value=$MOD.VTLIB_LBL_MODULE_MANAGER|cat:" &gt;  "|cat:$APP.LBL_IMPORT}
+{assign var="MODULESECTIONDESC" value=$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}
 {include file='SetMenu.tpl'}
 <div id="vtlib_modulemanager_import" style="display:block;position:absolute;width:500px;"></div>
 <section role="dialog" tabindex="-1" class="slds-fade-in-open slds-modal_large slds-app-launcher" aria-labelledby="header43">
@@ -34,34 +37,18 @@ function changeInstallType(obj) {
 	<br>
 
 	<div align=center>
-
-		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
-		<tr>
-			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
-			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$APP.LBL_IMPORT} </b></td>
-		</tr>
-
-		<tr>
-			<td class="small cblds-p-v_none" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
-		</tr>
-		</table>
-		<br>
-		<table border="0" cellpadding="10" cellspacing="0" width="100%">
+		<table border="0" class="" cellpadding="10" cellspacing="0" width="100%">
 		<tr>
 			<td>
 				<div id="vtlib_modulemanager_import_div">
-					<form method="POST" action="index.php" enctype="multipart/form-data" name="form">
-						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
-						<tr>
-							<td class='big' colspan=2><b>{$MOD.VTLIB_LBL_SELECT_PACKAGE_FILE}</b></td>
-						</tr>
-						</table>
-						<table cellpadding=5 cellspacing=0 border=0 width=100%>
+					<form method="POST" action="index.php" enctype="multipart/form-data" name="form">						
+						{include file='Components/PageSubTitle.tpl' PAGESUBTITLE=$MOD.VTLIB_LBL_SELECT_PACKAGE_FILE}
+						<table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered" cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
-							<td class='cellLabel small'>
+							<td>
 								<input type="radio" name="installtype" id="installtypefile" value="file" onclick="changeInstallType(this);"> <b><label for="module_zipfile" onclick="document.getElementById('installtypefile').checked=true;changeInstallType(document.getElementById('installtypefile'));">{$MOD.VTLIB_LBL_FILE_LOCATION}</label></b>
 							</td>
-							<td class='cellText small'>
+							<td>
 								<input type="file" class="small" name="module_zipfile" id="module_zipfile" size=50 disabled>
 								<p>{$MOD.VTLIB_LBL_PACKAGE_FILE_HELP}</p>
 							</td>
@@ -71,12 +58,12 @@ function changeInstallType(obj) {
 								<input type="radio" name="installtype" id="installtypeurl" value="url" onclick="changeInstallType(this);"> <b><label for="module_zipfile" onclick="document.getElementById('installtypeurl').checked=true;changeInstallType(document.getElementById('installtypeurl'));">{$MOD.VTLIB_LBL_PACKAGE_URL}</label></b>
 							</td>
 							<td class='cellText small'>
-								<input class="small" name="module_url" size="50" disabled>
+								<input class="slds-input" name="module_url" size="50" disabled>
 								<p>{$MOD.VTLIB_LBL_PACKAGE_URL_HELP}</p>
 							</td>
 						</tr>
 						</table>
-						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
+						<table class='slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered' cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
 							<td class='cellText small cblds-t-align_right' colspan=2 align=right>
 								<input type="hidden" name="module" value="Settings">
@@ -84,8 +71,14 @@ function changeInstallType(obj) {
 								<input type="hidden" name="module_import" value="Step2">
 								<input type="hidden" name="parenttab" value="Settings">
 
-								<input type="submit" class="crmbutton small edit" value="{$APP.LBL_IMPORT}" onclick="return modulemanager_import_validate(this.form)">
-								<input type="submit" class="crmbutton small delete" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="this.form.module_import.value='';">
+								<button type="submit" class="slds-button slds-button_success edit" onclick="return modulemanager_import_validate(this.form)">
+								<svg class="slds-button__icon slds-icon-text-success slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#save"></use></svg>
+								{$APP.LBL_IMPORT}
+								</button>
+								<button type="submit" class="slds-button slds-button_destructive delete"  onclick="this.form.module_import.value='';">
+								<svg class="slds-button__icon slds-icon-text-neutral slds-button__icon_left" aria-hidden="true"> <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#reply"></use></svg>
+								{$APP.LBL_CANCEL_BUTTON_LABEL}
+								</button>
 						</td>
 						</tr>
 						</table>
