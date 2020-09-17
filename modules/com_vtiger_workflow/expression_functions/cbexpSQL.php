@@ -31,7 +31,7 @@ function cbexpsql_supportedFunctions() {
 		'stringposition' => 'stringposition(haystack,needle)',
 		'stringlength' => 'stringlength(string)',
 		'stringreplace' => 'stringreplace(search,replace,subject)',
-		'substring' => 'substring(stringfield,start,end)',
+		'substring' => 'substring(stringfield,start,length)',
 		'uppercase'=>'uppercase(stringfield)',
 		'lowercase'=>'lowercase(stringfield)',
 		//'uppercasefirst'=>'uppercasefirst(stringfield)',
@@ -348,6 +348,7 @@ function cbexpsql_getsetting($arr, $mmodule) {
 // Aggregations
 function cbexpsql_aggregation($arr, $mmodule) {
 	$arr[4] = new cbexpsql_environmentstub($mmodule, '0x::#');
+	$arr[4]->returnReferenceValue = false;
 	$return = __cb_aggregation_getQuery($arr, true);
 	$mmod = CRMEntity::getInstance($mmodule);
 	$return = str_replace($mmod->table_name.'.', $mmod->table_name.'aggop.', $return);
@@ -384,7 +385,11 @@ function cbexpsql_div($arr, $mmodule) {
 }
 
 function cbexpsql_equals($arr, $mmodule) {
-	return 'TRUE';
+	if (count($arr)==2) {
+		return ($arr[0]->type=='string' ? "'".$arr[0]->value."'" : $arr[0]->value).'='.($arr[1]->type=='string' ? "'".$arr[1]->value."'" : $arr[1]->value);
+	} else {
+		return 'TRUE';
+	}
 }
 
 function cbexpsql_distinct($arr, $mmodule) {
@@ -552,6 +557,7 @@ class cbexpsql_environmentstub {
 	private $crmid;
 	private $module;
 	private $data;
+	public $returnReferenceValue = true;
 
 	public function __construct($module, $crmid) {
 		$this->crmid = $crmid;
@@ -573,7 +579,7 @@ class cbexpsql_environmentstub {
 
 	public function get($fieldName) {
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $fieldName, $matches);
-		if (count($matches)>0) {
+		if ($this->returnReferenceValue && count($matches)>0) {
 			global $current_user;
 			$ct = new VTSimpleTemplateOnData($fieldName);
 			$entityCache = new VTEntityCache($current_user);

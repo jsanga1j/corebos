@@ -104,6 +104,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
 ),
+'Debug_Access_Restricted_File' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 a call stack will be output before the "Sorry! Attempt to access restricted file." error message.',
+),
+'Debug_Email_Send_To_Inbucket'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 will send email ALWAYS through the Outgoing server settings which must be set to the inBucket settings',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -1028,6 +1042,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When you click on an event you will open the detail view of the record instead of the actions toolbar.',
 ),
+'Calendar_Notification_Sound' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Path',
+	'category' => 'Application',
+	'values' => 'path to audio file',
+	'definition' => 'Path to audio file to play when new notification arrives.',
+),
 'CronTasks_cronWatcher_mailto' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Liste CSV',
@@ -1259,6 +1280,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Permet l\'édition ou non des prix listés dans les modules Commande Fournisseur, Bon de Commande, Devis, Facture et "Issuecards" . Par défaut (0) les prix listés sont éditables.',
 ),
+'Inventory_Comment_Style' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Chaîne',
+	'category' => 'Application',
+	'values' => 'CSS Style',
+	'definition' => 'CSS Style to apply on inventory product line comment box. By default defines width and height.',
+),
 'Application_Group_Selection_Permitted' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -1356,6 +1384,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
+),
+'CustomerPortal_Default_User' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Integration',
+	'values' => 'user name of the default user to access as',
+	'definition' => 'When accessing an external portal application as a contact or employee, you must use a real coreBOS user to get the permissions. This variable defines that user. The application will look for the selected user on the contact/employee record. If there is none, then the value in this variable will be used.',
 ),
 'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
@@ -1538,6 +1573,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html',
 	'definition' => 'Defines the color scheme to use when drawing graphs. By default tableau.Tableau10 is set.',
+),
+'Application_CSRF_Valid_IP' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'CSV IPs',
+	'category' => 'Security',
+	'values' => 'Example: 127.0.0.1,192.168.0.100',
+	'definition' => 'Comma separated list of IP addresses from which could bypass CSRF control.',
+),
+'Application_PopupScreen_Width' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen width that popups will use. Default is 80%',
+),
+'Application_PopupScreen_Height' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'UI',
+	'values' => '',
+	'definition' => 'Percentage of screen height that popups will use. Default is 80%',
 ),
 );
 

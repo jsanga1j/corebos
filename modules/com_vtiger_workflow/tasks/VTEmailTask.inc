@@ -119,7 +119,11 @@ class VTEmailTask extends VTTask {
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
 			$replyto = $rt->render($entityCache, $entity->getId());
 		}
-		$et = new VTEmailRecipientsTemplate($this->recepient);
+		if (isset($entity->WorkflowContext['SendEmailTo'])) {
+			$et = new VTEmailRecipientsTemplate($entity->WorkflowContext['SendEmailTo']);
+		} else {
+			$et = new VTEmailRecipientsTemplate($this->recepient);
+		}
 		$to_email = $et->render($entityCache, $entity->getId());
 		if (empty($this->emailcc)) {
 			$cc = '';
@@ -181,6 +185,20 @@ class VTEmailTask extends VTTask {
 					}
 				}
 			}
+		}
+		$ids = array();
+		if (!empty($entity->WorkflowContext['MergeTemplateWith'])) {
+			$ids = explode(',', $entity->WorkflowContext['MergeTemplateWith']);
+		}
+		foreach ($ids as $id) {
+			if (strpos($id, 'x')>0) {
+				list($wsid, $id) = explode('x', $id);
+				$module = vtws_getEntityName($wsid);
+			} else {
+				$module = getSalesEntityType($id);
+			}
+			$this->subject = getMergedDescription($this->subject, $id, $module);
+			$this->content = getMergedDescription($this->content, $id, $module);
 		}
 		$this->after_retrieve();
 		if (!empty($this->attfieldnames)) {

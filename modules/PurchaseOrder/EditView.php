@@ -173,22 +173,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 }
 
 if (!empty($_REQUEST['vendor_id']) && $_REQUEST['record']=='') {
-	$vendid = vtlib_purify($_REQUEST['vendor_id']);
-	$vend_focus = CRMEntity::getInstance('Vendors');
-	$vend_focus->retrieve_entity_info($vendid, 'Vendors');
-	$focus->column_fields['vendor_id']=$vendid;
-	$focus->column_fields['bill_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['ship_city']=$vend_focus->column_fields['city'];
-	$focus->column_fields['bill_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['ship_street']=$vend_focus->column_fields['street'];
-	$focus->column_fields['bill_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['ship_state']=$vend_focus->column_fields['state'];
-	$focus->column_fields['bill_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['ship_code']=$vend_focus->column_fields['postalcode'];
-	$focus->column_fields['bill_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['ship_country']=$vend_focus->column_fields['country'];
-	$focus->column_fields['bill_pobox']=$vend_focus->column_fields['pobox'];
-	$focus->column_fields['ship_pobox']=$vend_focus->column_fields['pobox'];
+	$focus->column_fields['vendor_id'] = vtlib_purify($_REQUEST['vendor_id']);
 }
 $smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
@@ -363,6 +348,7 @@ $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
+$smarty->assign('Inventory_Comment_Style', GlobalVariable::getVariable('Inventory_Comment_Style', 'width:70%;height:40px;', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 $smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_Tax_FillInMode', 'All', $currentModule, $current_user->id));

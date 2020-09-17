@@ -194,7 +194,7 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 		}
 		function forString(opType, mappingno) {
 			var value = $(format('#save_fieldvalues_%s_value', mappingno));
-			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue slds-input fieldborder" readonly />', mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" value="" class="expressionvalue slds-input fieldborder slds-col slds-size_3-of-12 sm_margin" readonly />', mappingno));
 
 			$('#save_fieldvalues_'+mappingno+'_modulename').prop('disabled', '');
 			var fv = $(format('#save_fieldvalues_%s_value', mappingno));
@@ -309,44 +309,16 @@ function VTCreateEntityTask($, fieldvaluemapping) {
 			var fieldLabels = dict(entityFields);
 
 			function addFieldValueMapping(mappingno) {
-				const el = `
-					<div id="save_fieldvalues_${mappingno}" style='margin-bottom: 5px'>
-						<div class="slds-grid slds-grid_vertical-align-center">
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_fieldname" class="slds-select slds-page-header__meta-text"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<div class="slds-select_container">
-											<select id="save_fieldvalues_${mappingno}_modulename" class="slds-select slds-page-header__meta-text"></select>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_3-of-12 slds-p-around_x-small">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control">
-										<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input">
-										<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder" readonly >
-									</div>
-								</div>
-							</div>
-							<div class="slds-col slds-size_2-of-12 slds-p-around_x-small">
-								<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link">
-									<img src="modules/com_vtiger_workflow/resources/remove.png">
-								</span>
-							</div>
-					</div></div>`;
-
-				$('#save_fieldvaluemapping').append(el);
-
+				$('#save_fieldvaluemapping').append(
+					`<div id="save_fieldvalues_${mappingno}" style="margin-bottom: 5px" class="slds-grid slds-grid_vertical-align-center">
+						<select id="save_fieldvalues_${mappingno}_fieldname" class="fieldname slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select>
+						<select id="save_fieldvalues_${mappingno}_modulename" class="modulename slds-select slds-col slds-size_3-of-12 slds-page-header__meta-text sm_margin"></select>
+						<input type="hidden" id="save_fieldvalues_${mappingno}_value_type" class="type slds-input slds-col slds-size_3-of-12 sm_margin">
+						<input type="text" id="save_fieldvalues_${mappingno}_value" class="expressionvalue slds-input fieldborder slds-col slds-size_3-of-12 sm_margin" readonly >
+						<span id="save_fieldvalues_${mappingno}_remove" class="link remove-link">
+						<img src="modules/com_vtiger_workflow/resources/remove.png"></span>
+					</div>`
+				);
 				var fe = $('#save_fieldvalues_'+mappingno+'_fieldname');
 				var i = 1;
 				fillOptions(fe, fieldLabels);

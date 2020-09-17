@@ -67,10 +67,13 @@ class VTSimpleTemplate {
 				$result = $this->getWorkflowFunctionValue($fieldname);
 			} else {
 				$referenceId = $this->parent->get($referenceField);
-				if ($referenceId==null) {
+				if ($referenceId==null && !$this->keepvariable) {
 					$result = '';
 				} else {
 					try {
+						if (strpos($referenceId, 'x')===false) {
+							$referenceId = vtws_getEntityId($referenceModule).'x'.$referenceId;
+						}
 						$entity = $this->cache->forId($referenceId);
 						if ($referenceModule==='Users' && $entity->getModuleName()=='Groups') {
 							$result = $this->getGroupFieldList($referenceId, $fieldname);
@@ -109,14 +112,14 @@ class VTSimpleTemplate {
 								}
 							} else {
 								if ($this->keepvariable) {
-									$result = '$'.$fieldname;
+									$result = '$'.$full;
 								} else {
 									$result = '';
 								}
 							}
 						} else {
 							if ($this->keepvariable) {
-								$result = '$'.$fieldname;
+								$result = '$'.$full;
 							} else {
 								$result = '';
 							}

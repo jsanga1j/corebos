@@ -79,10 +79,16 @@ function vtws_getPortalUserDateFormat($user) {
 
 function vtws_getPortalUserInfo($user) {
 	$usrinfo = array();
-	$retfields = array('date_format','first_name','last_name','email1');
+	$retfields = array(
+		'date_format','first_name','last_name','email1','is_admin','roleid','language',
+		'currency_grouping_pattern','currency_decimal_separator','currency_grouping_separator','currency_symbol_placement',
+	);
 	foreach ($retfields as $fld) {
 		if (isset($user->column_fields[$fld])) {
 			$usrinfo[$fld] = $user->column_fields[$fld];
+			if ($fld=='roleid') {
+				$usrinfo['rolename'] = getRoleName($user->column_fields[$fld]);
+			}
 		}
 	}
 	$usrinfo['id'] = vtws_getEntityId('Users').'x'.$user->id;
@@ -307,7 +313,11 @@ function cbwsgetSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	require_once 'include/utils/utils.php';
 	// Was the search limited by user for specific modules?
 	$search_onlyin = (empty($search_onlyin) ? array() : explode(',', $search_onlyin));
-	$object_array = getSearchModules($search_onlyin);
+	$search_onlyin = array_filter(array_unique($search_onlyin), function ($var) {
+		return !empty(trim($var));
+	});
+	$accessModules = vtws_listtypes('', $user); // filter modules user does not have access to
+	$object_array = array_intersect(getSearchModules($search_onlyin), $accessModules['types']);
 	$total_record_count = 0;
 	$i = 0;
 	$j=0;
@@ -1040,6 +1050,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			vtiger_products.cost_price AS cost_price,
 			vtiger_products.mfr_part_no AS mfr_no,
 			vtiger_products.qtyinstock AS qtyinstock,
+			vtiger_products.qty_per_unit AS qty_per_unit,
+			vtiger_products.usageunit AS usageunit,
+			vtiger_products.qtyindemand AS qtyindemand,
 			{$prod_aliasquery}
 			vtiger_crmentity.deleted AS deleted,
 			vtiger_crmentity.crmid AS id,
@@ -1060,6 +1073,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			'' AS mfr_no,
 			0 AS qtyinstock,
 			'' AS cost_price,
+			vtiger_service.qty_per_unit AS qty_per_unit,
+			vtiger_service.service_usageunit AS usageunit,
+			0 AS qtyindemand,
 			{$serv_aliasquery}
 			vtiger_crmentity.deleted AS deleted,
 			vtiger_crmentity.crmid AS id,
@@ -1105,6 +1121,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			),
 			'logistics' => array(
 				'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
+				'qty_per_unit' => number_format((float)$prodser['qty_per_unit'], $cur_user_decimals, '.', ''),
+				'usageunit' => $prodser['usageunit'],
+				'qtyindemand' => number_format((float)$prodser['qtyindemand'], $cur_user_decimals, '.', ''),
 			),
 			'translations' => array(
 				'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),

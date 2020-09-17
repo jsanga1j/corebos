@@ -15,17 +15,10 @@
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
+{include file='BrowserVariables.tpl'}
+{include file='Components/Components.tpl'}
 <script type="text/javascript">
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-var gVTUserID = "{$CURRENT_USER_ID}";
-var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var image_pth = '{$IMAGE_PATH}';
-var userDateFormat = "{$USER_DATE_FORMAT}";
-var userHourFormat = "{$USER_HOUR_FORMAT}";
-var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
-var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
-var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
-var gVTuserLanguage = "{$USER_LANGUAGE}";
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
 var gPopupAlphaSearchUrl = '';
@@ -71,6 +64,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type="text/javascript" src="include/js/search.js"></script>
 <script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
+{include file='Components/ComponentsJS.tpl'}
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
